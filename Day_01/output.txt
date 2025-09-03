@@ -1,0 +1,18 @@
+//output :
+
+# KERNEL: generated data =   303379748
+# KERNEL: recived data =   303379748
+# KERNEL: generated data = -1064739199
+# KERNEL: recived data = -1064739199
+# KERNEL: generated data = -2071669239
+# KERNEL: recived data = -2071669239
+# KERNEL: generated data = -1309649309
+# KERNEL: recived data = -1309649309
+# KERNEL: generated data =   112818957
+# KERNEL: recived data =   112818957
+# KERNEL: generated data =  1189058957
+# KERNEL: recived data =  1189058957
+# KERNEL: generated data = -1295874971
+# KERNEL: recived data = -1295874971
+# KERNEL: generated data = -1992863214
+# KERNEL: recived data = -1992863214
