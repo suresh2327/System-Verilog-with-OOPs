@@ -1247,4 +1247,37 @@ endmodule
 # KERNEL: b=9
 
 
+/* 
+ 	object copying :
+     1) when we assign destinaion object with source object the memory of the destination object will be deleted and both destinationa nd source objects will point out to the source memory.
+     2) that is the reason why when we update the any changes in source object it refelect and update the whole code 
+*/
+
+class vlsi;
+  int a;
+  int b;
+endclass
+module tb;
+  vlsi v1,v2;
+  initial begin
+    v1=new();
+    v2=new();
+    v2.a=10;
+    v1=v2;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    v2.a=20;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    
+  end
+endmodule
+
+//output :
+# KERNEL: v1.a=10
+# KERNEL: V1=10 0
+# KERNEL: v1.a=20
+# KERNEL: V1=20 0
+
+
 
