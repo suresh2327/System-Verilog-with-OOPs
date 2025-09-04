@@ -1280,4 +1280,45 @@ endmodule
 # KERNEL: V1=20 0
 
 
+/*
+shallow copying :
+  				--> it can be used to overcome the prohlems with copy with handle
+               --> in shallow opy memory is created for destination handle or object
+*/
+
+
+//shallow copy for non objected property
+
+class vlsi;
+  int a;  //Non object property
+  int b;  //Non object property
+endclass
+module tb;
+  vlsi v1,v2;
+  initial begin
+    v1=new();
+    v2=new();
+    v2.a=10;
+    
+    v1=new v2;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    v2.a=20;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    
+  end
+endmodule
+
+
+//output:
+# KERNEL: v1.a=10
+# KERNEL: V1=10 0
+# KERNEL: v1.a=10
+# KERNEL: V1=10 0
+
+
+
+
+
 
