@@ -23,6 +23,29 @@ endmodule
 
 
 
+//number copying :- non object properties uses the separate memory
+// here varibels are stored in the different memory locations
+//in number copying separate memory locationa re used for the given varibale
+module tb;
+  int a,b;
+  initial begin
+    a=9;
+    b=6;
+    $display("a=%0d,b=%0d",a,b);
+    b=a;
+     $display("a=%0d,b=%0d",a,b);
+    a=20;
+    $display("b=%0d",b);     
+  end
+endmodule
+
+//output:
+# KERNEL: a=9,b=6
+# KERNEL: a=9,b=9
+# KERNEL: b=9
+
+
+
 
 
 
