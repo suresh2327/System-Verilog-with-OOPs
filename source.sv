@@ -1318,6 +1318,58 @@ endmodule
 # KERNEL: V1=10 0
 
 
+/*
+shallow copying :
+  				--> it can be used to overcome the prohlems with copy with handle
+               --> in shallow opy memory is created for destination handle or object
+                --> **shallow copy work only with non objected properties(data types) only 
+                --> it will not work for (objects) object properties
+                 --> it is better for non object properties
+
+
+  drawback :
+            shallow copy fail to copy the value whenever there is an object is created below the class
+ 
+*/
+
+
+//shallow copying for fails conditon for objected property
+class packet;
+  int count;
+endclass
+
+class vlsi;
+  int a;  //Non object property
+  int b;  //Non object property
+  packet pck=new(); //object property
+endclass
+module tb;
+  vlsi v1,v2;
+  initial begin
+    v1=new();
+    v2=new();
+    v2.a=10;
+    v2.pck.count=50;
+    v1=new v2;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    v2.a=20;
+    $display("v1.a=%0d",v1.a);
+    $display("V1=%0p",v1);
+    
+  end
+endmodule
+
+//output:
+# KERNEL: v1.a=10
+# KERNEL: V1=10 0 <class handle>
+# KERNEL: v1.a=10
+# KERNEL: V1=10 0 <class handle>
+
+
+
+
+
 
 
 
