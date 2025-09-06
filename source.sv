@@ -1470,9 +1470,19 @@ EX:
     	$display(" b=%0d", b);
   	end
 	endmodule
-///// Here byte' Performs the Static Casting./////
+// Here byte' Performs the Static Casting.
 
-“Convert the value of a (an int, 32-bit signed) into a byte (8-bit signed), then assign it to b.”
+//“Convert the value of a (an int, 32-bit signed) into a byte (8-bit signed), then assign it to b.”
+** Object : Data Type is Decided at the Run time.
+--> The Object can be of any class type( it can be base / Derived class). Hence it is called the Dynamic Casting.
+
+Note: 
+	No Inheritance → $cast fails
+	With Inheritance → $cast works
+
+--> It is mainly used in class inheritance when you want to safely convert a base-class handle into a derived-class handle.
+
+
 
 
 
