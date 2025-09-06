@@ -1473,6 +1473,24 @@ EX: */
 // Here byte' Performs the Static Casting.
 
 //“Convert the value of a (an int, 32-bit signed) into a byte (8-bit signed), then assign it to b.”
+
+
+
+
+
+
+/*This is called upcasting.
+
+Upcasting is always safe because every eth_good_pkt is also an eth_pkt.
+
+So this cast will succeed.
+
+Upcasting (derived → base) always succeeds.
+
+Downcasting (base → derived) may fail if the object is not really of derived type.
+
+$cast = safe runtime check when converting between object handles (especially base ↔ derived).
+*/
 /*** Object : Data Type is Decided at the Run time.
 --> The Object can be of any class type( it can be base / Derived class). Hence it is called the Dynamic Casting.
 
