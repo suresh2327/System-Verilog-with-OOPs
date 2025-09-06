@@ -1600,8 +1600,12 @@ Conclusion:
 
 
 //clone
-$clone → Making a new copy (duplicate object)
-Use $clone when you care about getting your own independent copy.
+/*$clone → Making a new copy (duplicate object)
+Use $clone when you care about getting your own independent copy.*/
+
+//07//09//2025
+
+
 
 
 
