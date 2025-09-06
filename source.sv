@@ -1482,7 +1482,28 @@ Note:
 
 --> It is mainly used in class inheritance when you want to safely convert a base-class handle into a derived-class handle.
 
+//code
+class eth_pkt;
+  int count ;
+endclass
 
+class eth_good_pkt extends eth_pkt;
+  int a;
+endclass
+
+module top;
+bit f;
+  eth_pkt pkt=new();
+  eth_good_pkt g_pkt=new();	
+  initial begin
+    //$cast ( pkt,g_pkt) ; // $cast is called System Task
+    f=$cast ( pkt,g_pkt) ; // System Function
+  end
+endmodule
+////////////
+$cast(pkt, g_pkt);
+
+Here you are casting a derived-class handle (g_pkt) into a base-class handle (pkt).
 
 
 
