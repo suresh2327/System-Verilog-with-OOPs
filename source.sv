@@ -1455,10 +1455,10 @@ Analogy : Melt the metal and put into different shapes.
 --> int a; // Singular Variable 
 --> int b[3:0]; // Non_ Singular
 
-Variable can be a Object / Non_ Object
+/*Variable can be a Object / Non_ Object
 **Non Object: Data Type is Known at the time of Compile. Hence this type of Casting is called Static Casting.
 --> Static Casting Does not use the $cast .
-EX: 
+EX: */
 	module top;
  	 int a;
  	 byte unsigned b;
@@ -1473,7 +1473,7 @@ EX:
 // Here byte' Performs the Static Casting.
 
 //“Convert the value of a (an int, 32-bit signed) into a byte (8-bit signed), then assign it to b.”
-** Object : Data Type is Decided at the Run time.
+/*** Object : Data Type is Decided at the Run time.
 --> The Object can be of any class type( it can be base / Derived class). Hence it is called the Dynamic Casting.
 
 Note: 
@@ -1481,7 +1481,7 @@ Note:
 	With Inheritance → $cast works
 
 --> It is mainly used in class inheritance when you want to safely convert a base-class handle into a derived-class handle.
-
+*/
 //code
 class eth_pkt;
   int count ;
