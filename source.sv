@@ -1501,9 +1501,9 @@ bit f;
   end
 endmodule
 ////////////
-$cast(pkt, g_pkt);
+//$cast(pkt, g_pkt);
 
-Here you are casting a derived-class handle (g_pkt) into a base-class handle (pkt).
+//Here you are casting a derived-class handle (g_pkt) into a base-class handle (pkt).
 
 
 
