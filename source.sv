@@ -1368,6 +1368,14 @@ endmodule
 
 
 //07//09//10
+/*
+Deep Copy: 
+	<Source_handle> copy (<Dest_handle>);
+--> Creat Memory for the Destination Object 
+--> Also Creat memory for the objects below the class also.
+--> Copy Field by field from source to destination.
+*/
+
 
 
 
