@@ -1570,6 +1570,24 @@ endmodule
 //output : No error
     
 
+/*
+$cast Possibilities: 
+
+eth_pkt pkt1, pkt2;
+eth_good_pkt  g_pkt;
+eth_bad_pkt     b_pkt;
+
+$cast(g_pkt, pkt1)
+--> Not Possible
+--> Above usage is as a  task , we get the run time rror.
+
+$cast (pkt1,g_pkt)
+--> Possible 
+
+$cast (g_pkt, b_pkt)
+--> Not Possible, since they are not directly realted through inheritance.
+*/
+
 
 
 
