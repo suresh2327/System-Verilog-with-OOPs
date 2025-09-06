@@ -1586,7 +1586,22 @@ $cast (pkt1,g_pkt)
 
 $cast (g_pkt, b_pkt)
 --> Not Possible, since they are not directly realted through inheritance.
+
+
+Conclusion: 
+	$cast → Type Conversion (runtime check)
+
+=> Purpose: Change a handle type (Base ↔ Derived).
+
+=> Does not copy the object, only reinterprets the handle safely.
+
+
 */
+
+
+//clone
+$clone → Making a new copy (duplicate object)
+Use $clone when you care about getting your own independent copy.
 
 
 
