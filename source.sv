@@ -1506,6 +1506,53 @@ endmodule
 //Here you are casting a derived-class handle (g_pkt) into a base-class handle (pkt).
 
 
+//down casting
+class eth_pkt;
+  int count ;
+endclass
+
+class eth_good_pkt extends eth_pkt;
+  int a;
+endclass
+
+module top;
+ bit f;
+  eth_pkt pkt=new();
+  eth_good_pkt g_pkt=new();	
+  initial begin
+    $cast( g_pkt,pkt) ; // $cast is called System Task
+    //f=$cast ( pkt,g_pkt) ; // System Function
+  end
+endmodule
+
+//output:
+# RUNTIME: Error: RUNTIME_0197 testbench.sv (28): Illegal conversion to object of class eth_good_pkt from object of class eth_pkt.
+
+
+//up casting
+
+class eth_pkt;
+  int count ;
+endclass
+
+class eth_good_pkt extends eth_pkt;
+  int a;
+endclass
+
+module top;
+bit f;
+  eth_pkt pkt=new();
+  eth_good_pkt g_pkt=new();	
+  initial begin
+    $cast(pkt,g_pkt) ; // $cast is called System Task
+    //f=$cast ( pkt,g_pkt) ; // System Function
+  end
+endmodule
+
+//output : No error
+    
+
+
 
 
 
