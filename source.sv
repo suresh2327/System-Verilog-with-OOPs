@@ -1446,6 +1446,17 @@ endmodule
 
 
 
+Casting: 
+
+Analogy : Melt the metal and put into different shapes.
+
+*Converting onee Variable into the Another Variable Format*
+** Casting can only be done for Singular Variables.**
+--> int a; // Singular Variable 
+--> int b[3:0]; // Non_ Singular
+
+
+
 
 
 
