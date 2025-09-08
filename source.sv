@@ -1494,6 +1494,59 @@ endmodule
 
 
 
+//deep copy simpled versionn
+class packet;
+  int count;
+endclass
+
+class vlsi;
+  int a;  //Non object property
+  int b;  //Non object property
+  packet pck=new(); //object property
+  function void print();
+    $display("a=%0d",a);
+    $display("b=%0d",b);
+    $display("pck=%0p",pck); 
+  endfunction
+  function void copy(output vlsi v);
+    v=new();
+    v.a=a;
+    v.b=b;
+    v.pck=new();
+    v.pck.count=pck.count;
+  endfunction
+endclass
+
+module tb;
+  vlsi v1,v2;
+  initial begin
+    v1=new();
+    v2=new();
+    v2.a=10;
+    v2.b=20;
+    v2.pck.count=100;
+    
+    v2.copy(v1);
+    //$display("v1=%0p",v1);
+    v1.print();
+    v2.a=30;
+    v2.b=40;
+    v2.pck.count=200;
+    v1.print();
+    //v2.print();
+  end
+endmodule
+
+
+//output:
+# KERNEL: a=10
+# KERNEL: b=20
+# KERNEL: pck=100
+# KERNEL: a=10
+# KERNEL: b=20
+# KERNEL: pck=100
+
+
 Casting: 
 
 Analogy : Melt the metal and put into different shapes.
