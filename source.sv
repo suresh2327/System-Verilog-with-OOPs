@@ -1367,6 +1367,54 @@ endmodule
 # KERNEL: V1=10 0 <class handle>
 
 
+
+
+//shallow copy
+class packet;
+  int count;
+endclass
+
+class vlsi;
+  int a;  //Non object property
+  int b;  //Non object property
+  packet pck=new(); //object property
+  function void print();
+    $display("a=%0d",a);
+    $display("b=%0d",b);
+    $display("pck=%0p",pck);
+  endfunction
+endclass
+
+module tb;
+  vlsi v1,v2;
+  initial begin
+    v1=new();
+    v2=new();
+    v2.a=10;
+    v2.b=20;
+    v2.pck.count=100;
+    v1=new v2;
+    $display("v1=%0p",v1);
+    //this is one of draback of shallow copy when object properties is there it will copy the class handle not the actual values and it is properly working with non object properties
+    v2.a=30;
+    v2.b=40;
+    v2.pck.count=200;
+    // this is another problem of shallow copy the non object properties have separate memory locations and object properties have same memory locations so, even we changes a,,b values it doesn't updated the a,b values and the object pck.count is updated it has same memory location.
+    v1.print();
+    v2.print();
+  end
+endmodule
+
+//output 
+# KERNEL: v1=10 20 <class handle>
+# KERNEL: a=10
+# KERNEL: b=20
+# KERNEL: pck=200
+# KERNEL: a=30
+# KERNEL: b=40
+# KERNEL: pck=200
+
+
 //07//09//10
 /*
 Deep Copy: 
@@ -1386,7 +1434,7 @@ endclass
 
 class sample;
   int a;       // Non-object variable
-  int b;       // Non-object variable
+  int b;       // Non-object variable 
   packet pck;  // Object variable
 
   function new();
@@ -1518,7 +1566,7 @@ bit f;
     f=$cast ( pkt,g_pkt) ; // System Function
   end
 endmodule
-////////////
+
 //$cast(pkt, g_pkt);
 
 //Here you are casting a derived-class handle (g_pkt) into a base-class handle (pkt).
@@ -1579,7 +1627,7 @@ eth_bad_pkt     b_pkt;
 
 $cast(g_pkt, pkt1)
 --> Not Possible
---> Above usage is as a  task , we get the run time rror.
+--> Above usage is as a  task , we get the run time error.
 
 $cast (pkt1,g_pkt)
 --> Possible 
@@ -1603,7 +1651,7 @@ Conclusion:
 /*$clone → Making a new copy (duplicate object)
 Use $clone when you care about getting your own independent copy.*/
 
-//07//09//2025
+//08//09//2025
 
 
 
