@@ -1704,4 +1704,63 @@ Conclusion:
 /*$clone → Making a new copy (duplicate object)
 Use $clone when you care about getting your own independent copy.*/
 
-//08//09//2025
+//09//09//2025
+//up casting
+class ethernet_pck;
+  int a;
+endclass
+
+class good_ethernet_pck extends ethernet_pck;
+  int b;
+endclass
+module tb;
+  bit y;
+    ethernet_pck eth_pck;
+  good_ethernet_pck good_pck;
+    
+  initial begin
+    eth_pck=new();
+    good_pck=new();
+    //upcasting using system task and system fucntion
+   $cast(eth_pck,good_pck);//up casting using system task
+    y=$cast(eth_pck,good_pck);//up casting using system function
+    $display("y=%0b",y);
+  end
+endmodule
+    
+//output :
+   # KERNEL: y=1
+
+
+//down casting
+class ethernet_pck;
+  int a;
+endclass
+
+class good_ethernet_pck extends ethernet_pck;
+  int b;
+endclass
+module tb;
+  bit y;
+    ethernet_pck eth_pck;
+  good_ethernet_pck good_pck;
+    
+  initial begin
+    eth_pck=new();
+    good_pck=new();
+
+   //$cast(good_pck,ethernet_pck);//down casting
+    y=$cast(good_pck,eth_pck);//down casting using system function
+    $display("y=%0b",y);
+  end
+endmodule
+
+//output :
+//case:1
+ ERROR VCP5220 "Variable reference to a non-variable ethernet_pck." "testbench.sv" 21  30
+ ERROR VCP5118 "Non-typed object used in expression: ethernet_pck [class]." "testbench.sv"
+//case:2  
+# KERNEL: y=0
+    
+
+      
