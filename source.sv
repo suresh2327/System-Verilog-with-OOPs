@@ -1800,8 +1800,87 @@ endmodule
 
 
 
-// for apb transcation using properites , methods , constraints for 1 transacation:
+// for apb transcation using properites , methods , constraints for 10 transacation:
+class apb_tx;
+ rand bit wr_rd;
+ rand bit [7:0]addr;
+ rand bit [31:0]data;
+ rand bit [3:0]sel;
+  
+  function void print();
+    $display("wr_rd=%0b | addr=%0h | data=%0h | sel=%0d",wr_rd,addr,data,sel);
+  endfunction
 
+constraint sel_c{
+  sel inside {4'b0000,4'b0010,4'b0100,4'b1000,4'b1010};
+}
+endclass
+
+module tb;
+  apb_tx tx=new();
+  initial begin
+    repeat(10) begin
+       tx.randomize();
+    tx.print();
+    end 
+  end
+endmodule
+
+
+//output:
+Compile success 0 Errors 1 Warnings 
+# KERNEL: wr_rd=0 | addr=59 | data=6001c9ca | sel=10
+# KERNEL: wr_rd=0 | addr=59 | data=35194105 | sel=2
+# KERNEL: wr_rd=0 | addr=25 | data=aefa8798 | sel=8
+# KERNEL: wr_rd=1 | addr=ab | data=16d29409 | sel=10
+# KERNEL: wr_rd=0 | addr=7 | data=317de130 | sel=0
+# KERNEL: wr_rd=0 | addr=a0 | data=247f3c23 | sel=0
+# KERNEL: wr_rd=0 | addr=e4 | data=1c19d11d | sel=4
+# KERNEL: wr_rd=1 | addr=70 | data=d649db16 | sel=2
+# KERNEL: wr_rd=1 | addr=f8 | data=7b0fd5f8 | sel=10
+# KERNEL: wr_rd=0 | addr=cd | data=13f43acd | sel=8
+
+
+
+//for apb transcation using properites , methods , constraints for 10 transacation , without warnings:
+
+class apb_tx;
+ rand bit wr_rd;
+ rand bit [7:0]addr;
+ rand bit [31:0]data;
+ rand bit [3:0]sel;
+  
+  function void print();
+    $display("wr_rd=%0b | addr=%0h | data=%0h | sel=%0d",wr_rd,addr,data,sel);
+  endfunction
+
+constraint sel_c{
+  sel inside {4'b0000,4'b0010,4'b0100,4'b1000,4'b1010};
+}
+endclass
+
+module tb;
+  apb_tx tx=new();
+  initial begin
+    repeat(10) begin
+      assert ( tx.randomize());
+    tx.print();
+    end 
+  end
+endmodule
+
+//output:
+Compile success 0 Errors 0 Warnings 
+# KERNEL: wr_rd=0 | addr=59 | data=6001c9ca | sel=10
+# KERNEL: wr_rd=0 | addr=59 | data=35194105 | sel=2
+# KERNEL: wr_rd=0 | addr=25 | data=aefa8798 | sel=8
+# KERNEL: wr_rd=1 | addr=ab | data=16d29409 | sel=10
+# KERNEL: wr_rd=0 | addr=7 | data=317de130 | sel=0
+# KERNEL: wr_rd=0 | addr=a0 | data=247f3c23 | sel=0
+# KERNEL: wr_rd=0 | addr=e4 | data=1c19d11d | sel=4
+# KERNEL: wr_rd=1 | addr=70 | data=d649db16 | sel=2
+# KERNEL: wr_rd=1 | addr=f8 | data=7b0fd5f8 | sel=10
+# KERNEL: wr_rd=0 | addr=cd | data=13f43acd | sel=8
 
 
       
