@@ -1797,7 +1797,16 @@ endmodule
 
 
 //output:
-
+# KERNEL: wr_rd=0 | addr=59 | data=6001c9ca | sel=10
+# KERNEL: wr_rd=0 | addr=59 | data=35194105 | sel=2
+# KERNEL: wr_rd=0 | addr=25 | data=aefa8798 | sel=8
+# KERNEL: wr_rd=1 | addr=ab | data=16d29409 | sel=10
+# KERNEL: wr_rd=0 | addr=7 | data=317de130 | sel=0
+# KERNEL: wr_rd=0 | addr=a0 | data=247f3c23 | sel=0
+# KERNEL: wr_rd=0 | addr=e4 | data=1c19d11d | sel=4
+# KERNEL: wr_rd=1 | addr=70 | data=d649db16 | sel=2
+# KERNEL: wr_rd=1 | addr=f8 | data=7b0fd5f8 | sel=10
+# KERNEL: wr_rd=0 | addr=cd | data=13f43acd | sel=8
 
 
       
