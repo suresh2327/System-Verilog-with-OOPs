@@ -1763,4 +1763,41 @@ endmodule
 # KERNEL: y=0
     
 
+ //transsaction class example
+ // for apb transcation using properites , methods , constraints
+
+ // Code your testbench here
+// or browse Examples
+class apb_tx;
+ rand bit wr_rd;
+ rand bit [7:0]addr;
+ rand bit [31:0]data;
+ rand bit [3:0]sel;
+  
+   function void print();
+    $display("wr_rd=%0b | addr=%0h | data=%0h | sel=%0d",wr_rd,addr,data,sel);
+  endfunction
+
+
+constraint sel_c{
+  sel inside {4'b0000,4'b0010,4'b0100,4'b1000,4'b1010};
+}
+endclass
+
+module tb;
+  apb_tx tx=new();
+  initial begin
+    repeat(10) begin
+      tx.randomize();
+    tx.print();
+    end
+      
+  end
+endmodule
+
+
+//output:
+
+
+
       
