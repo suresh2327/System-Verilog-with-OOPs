@@ -2324,6 +2324,97 @@ endinterface
 # KERNEL: output from dut sel=1,i1=0,i0=1,y=0
 # KERNEL: [driver to interface ] test cases : sel=0,i1=1,i0=0
 # KERNEL: output from dut sel=0,i1=1,i0=0,y=0
+
+
+
+//tx_class, generator , driver , mailbox , dut , interface for half adder
+class tx_class;
+  rand bit a;
+  rand bit b;
+  task print(string id);
+    $display("[%0s] a=%0b,b=%0b",id,a,b);
+  endtask
+endclass
+
+class generator;
+  tx_class tx;
+  mailbox mbx;
+  task run();
+    repeat(4)begin
+    tx=new();
+    assert (tx.randomize());
+    mbx.put(tx);
+    tx.print("generator to driver"); 
+  end
+  endtask
+endclass
+
+class driver;
+  tx_class tx;
+  virtual inter vif;
+  mailbox mbx;
+  bit [1:0]temp;
+  task run();
+    repeat(4)begin
+    tx=new();
+      mbx.get(tx);
+    tx.print("driver to interface");
+      vif.a=tx.a;
+      vif.b=tx.b;
+      #1; $display("output from dut sum=%0b,carry=%0b",vif.sum,vif.carry);
+   end 
+  endtask
+endclass
+
+module tb;
+  ha u1(.a(aif.a),.b(aif.b),.sum(aif.sum),.carry(aif.carry));
+  inter aif();
+  mailbox mbx;
+  generator gen;
+  driver div;
+  initial begin
+    mbx=new();
+    gen=new();
+    div=new();
+    gen.mbx=mbx;
+    div.mbx=mbx;
+    div.vif=aif;
+    fork
+    gen.run();
+    div.run();
+    join
+  end
+endmodule
+
+
+//dut
+module ha(a,b,sum,carry);
+  input a,b;
+  output sum,carry;
+  assign sum=a^b;
+  assign carry=a&b;
+endmodule
+
+interface inter;
+  logic a;
+  logic b;
+  logic sum;
+  logic carry;
+endinterface
+
+//output;
+# KERNEL: [generator to driver] a=0,b=0
+# KERNEL: [generator to driver] a=1,b=1
+# KERNEL: [generator to driver] a=1,b=0
+# KERNEL: [generator to driver] a=0,b=1
+# KERNEL: [driver to interface] a=0,b=0
+# KERNEL: output from dut sum=0,carry=0
+# KERNEL: [driver to interface] a=1,b=1
+# KERNEL: output from dut sum=0,carry=1
+# KERNEL: [driver to interface] a=1,b=0
+# KERNEL: output from dut sum=1,carry=0
+# KERNEL: [driver to interface] a=0,b=1
+# KERNEL: output from dut sum=1,carry=0
   
   
   
