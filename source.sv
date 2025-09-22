@@ -1963,8 +1963,63 @@ endmodule
 # KERNEL: wr_rd=1 | addr=c5 | data=30a1b9ab | sel=10
 # KERNEL: wr_rd=1 | addr=9 | data=4c378f0d | sel=10
 
-//9
+//22/09/2025
+
+class apb_tx;
+  rand bit wr_rd;
+ rand bit [7:0]addr;
+ rand bit [31:0]data;
+ rand bit [3:0]sel;
+  
+  function void print(string thub);
+    $display("[%0s] wr_rd=%0b | addr=%0h | data=%0h | sel=%0d ",thub,wr_rd,addr,data,sel);
+  endfunction
+endclass
+
+class generator;
+  apb_tx tx;
+  mailbox mbx;
+  task run();
+    repeat(10) begin
+       tx=new();
+     tx.randomize();
+      mbx.put(tx);
+      tx.print("gen");
+    end
+  endtask  
+endclass
+
+class driver;
+  mailbox mbx;
+  apb_tx tx;
+  
+  task run();
+    repeat (10) begin
+      tx=new();
+      mbx.get(tx);
+      tx.print("div");
+    end
+  endtask
+endclass
 
 
+module tb;
+   
+  generator gen;
+  driver div;
+  mailbox mbx;
+  initial begin
+    gen=new();
+    div=new();
+    mbx=new();
+    gen.mbx=mbx;
+    div.mbx=mbx;
+
+    fork
+     gen.run();
+     div.run();
+    join
+  end
+endmodule
 
       
