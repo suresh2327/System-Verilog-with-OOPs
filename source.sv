@@ -2045,4 +2045,52 @@ endmodule
 # KERNEL: [div] wr_rd=1 | addr=5a | data=7c97ffec | sel=13 
 
 
+
+// inheritance classes
+class parent;
+   int a=10;
+   int b=8;
+  function void print();
+    $display("a=%0d,b=%0d",a,b);
+  endfunction
+endclass
+
+class child extends parent;
+  int c;
+  function void sub();
+    c=a-b;
+  $display("c=%0d",c);
+  endfunction
+endclass
+
+class child1 extends child;
+  int d;
+  function void add();
+    d=a+b;
+    $display("d=%0d",d);
+  endfunction
+endclass
+
+module tb;
+  child c;
+  child1  c1;
+  initial begin
+     c=new();
+    c1=new();
+    c.print();
+    c.sub();
+    c1.sub();
+  end
+endmodule
+
+//output:
+
+# KERNEL: a=10,b=8
+# KERNEL: c=2
+# KERNEL: c=2
+
+  
+  
+
+
       
