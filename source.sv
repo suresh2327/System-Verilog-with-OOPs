@@ -2022,4 +2022,27 @@ module tb;
   end
 endmodule
 
+//output 
+# KERNEL: [gen] wr_rd=0 | addr=3a | data=a5e360f4 | sel=9 
+# KERNEL: [gen] wr_rd=1 | addr=c5 | data=ecb9e1da | sel=8 
+# KERNEL: [gen] wr_rd=1 | addr=5e | data=220516f | sel=13 
+# KERNEL: [gen] wr_rd=0 | addr=c1 | data=aa5568f4 | sel=10 
+# KERNEL: [gen] wr_rd=0 | addr=b3 | data=ffb244cc | sel=4 
+# KERNEL: [gen] wr_rd=0 | addr=63 | data=ba68f7db | sel=6 
+# KERNEL: [gen] wr_rd=0 | addr=1e | data=20d7bfbd | sel=12 
+# KERNEL: [gen] wr_rd=0 | addr=ef | data=4a5b1fcb | sel=0 
+# KERNEL: [gen] wr_rd=1 | addr=f9 | data=1de2f63d | sel=4 
+# KERNEL: [gen] wr_rd=1 | addr=5a | data=7c97ffec | sel=13 
+# KERNEL: [div] wr_rd=0 | addr=3a | data=a5e360f4 | sel=9 
+# KERNEL: [div] wr_rd=1 | addr=c5 | data=ecb9e1da | sel=8 
+# KERNEL: [div] wr_rd=1 | addr=5e | data=220516f | sel=13 
+# KERNEL: [div] wr_rd=0 | addr=c1 | data=aa5568f4 | sel=10 
+# KERNEL: [div] wr_rd=0 | addr=b3 | data=ffb244cc | sel=4 
+# KERNEL: [div] wr_rd=0 | addr=63 | data=ba68f7db | sel=6 
+# KERNEL: [div] wr_rd=0 | addr=1e | data=20d7bfbd | sel=12 
+# KERNEL: [div] wr_rd=0 | addr=ef | data=4a5b1fcb | sel=0 
+# KERNEL: [div] wr_rd=1 | addr=f9 | data=1de2f63d | sel=4 
+# KERNEL: [div] wr_rd=1 | addr=5a | data=7c97ffec | sel=13 
+
+
       
