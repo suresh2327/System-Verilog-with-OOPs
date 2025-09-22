@@ -2221,6 +2221,109 @@ module tb;
     
   end
 endmodule
+
+
+
+//tx_class, generator , driver , mailbox , dut , interface for 2 to 1 mux 
+// Code your testbench here
+// or browse Examples
+
+class tx_class;
+ rand bit i0;
+  rand bit i1;
+  rand bit sel;
+  task print(string id);
+       $display("[%0s] test cases : sel=%0b,i1=%0b,i0=%0b",id,sel,i1,i0);
+  endtask 
+endclass
+
+
+class generator;
+  tx_class tx;
+  mailbox mbx;
+  task run();
+    repeat(4) begin
+      tx=new();
+      assert (tx.randomize());
+      mbx.put(tx);
+      tx.print("generator to driver ");
+    end
+  endtask
+endclass
+
+
+class driver;
+  tx_class tx;
+  mailbox mbx;
+ virtual inter vif;
+  bit [2:0]temp;
+  bit sel,i1,i0;
+  task run();
+    repeat(4) begin
+      tx=new();
+      mbx.get(tx);
+      tx.print("driver to interface ");
+      temp={tx.sel,tx.i1,tx.i0};
+      vif.sel=temp[2];
+      vif.i1=temp[1];
+      vif.i0=temp[0];     
+ 
+       #1 $display("output from dut sel=%0b,i1=%0b,i0=%0b,y=%0b",vif.sel,vif.i1,vif.i0,vif.y);
+    end
+  endtask
+endclass
+
+
+
+module tb;
+  mux_2x1 u2(.sel(aif.sel),.i0(aif.i0),.i1(aif.i1),.y(aif.y));
+  inter aif();
+  generator gen;
+  driver div;
+  mailbox mbx;
+  initial begin
+    gen=new();
+    div=new();
+    mbx=new();
+    gen.mbx=mbx;
+    div.mbx=mbx;
+    div.vif=aif;
+    fork
+    gen.run();
+    div.run();
+    join
+   //div.display();
+  end
+endmodule
+
+// 2 to 1 mux dut
+// Code your design here
+module mux_2x1(i1,i0,sel,y);
+  input i1,i0,sel;
+  output y;
+  assign y=sel?i1:i0;
+endmodule
+
+interface inter;
+  logic i0;
+  logic i1;
+  logic sel;
+  logic y;
+endinterface
+
+//output:
+# KERNEL: [generator to driver ] test cases : sel=0,i1=0,i0=0
+# KERNEL: [generator to driver ] test cases : sel=0,i1=1,i0=1
+# KERNEL: [generator to driver ] test cases : sel=1,i1=0,i0=1
+# KERNEL: [generator to driver ] test cases : sel=0,i1=1,i0=0
+# KERNEL: [driver to interface ] test cases : sel=0,i1=0,i0=0
+# KERNEL: output from dut sel=0,i1=0,i0=0,y=0
+# KERNEL: [driver to interface ] test cases : sel=0,i1=1,i0=1
+# KERNEL: output from dut sel=0,i1=1,i0=1,y=1
+# KERNEL: [driver to interface ] test cases : sel=1,i1=0,i0=1
+# KERNEL: output from dut sel=1,i1=0,i0=1,y=0
+# KERNEL: [driver to interface ] test cases : sel=0,i1=1,i0=0
+# KERNEL: output from dut sel=0,i1=1,i0=0,y=0
   
   
   
