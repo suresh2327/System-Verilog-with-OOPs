@@ -2541,7 +2541,161 @@ endmodule
 # KERNEL:  a=30,b=40
 # KERNEL:  a=30,b=40
 
+//inheritace 
+class parent;
+int a=10;
+int b=15;
+function void pdisplay ();
+  $display(" a=%0d, b=%0d", a,b);
+endfunction
+endclass
 
+class child extends parent;
+  int c=20;
+  function void cdisplay();
+    $display(" c=%0d",c);
+    endfunction
+endclass
+
+module tb;
+  child c1;
+  initial begin
+    c1=new();
+    c1.pdisplay();
+    c1.cdisplay();
+  end
+endmodule
+//output:
+# KERNEL:  a=10, b=15
+# KERNEL:  c=20
+
+//multi level inheritance
+class parent;
+   int pdata=10;
+  function void pprint();
+    $display(" pdata=%0d", pdata);
+  endfunction 
+endclass
+
+class child extends parent;
+  int cdata=15;
+  function void cprint();
+    $display(" cdata=%0d", cdata);
+  endfunction
+endclass
+
+class child1 extends parent;
+  int c1data=20;
+  function void c1print();
+    $display(" c1data=%0d", c1data);
+  endfunction
+endclass
+
+class child2 extends child;
+  int c2data=25;
+  function void c2print();
+    $display(" c2data=%0d", c2data);
+  endfunction
+endclass
+  
+module tb;
+  child c;
+  child1 c1;
+  child2 c2;
+  initial begin
+    c=new();
+    c.cprint();
+    c.pprint();
+    c.pdata=50;
+    c.pprint();
+    c1=new();
+    c1.c1print();
+    c1.pprint();
+    c1.pdata=60;
+    c1.pprint();
+    c2=new();
+    c2.c2print();
+    c2.cprint();
+    c2.pprint();
+    c2.cdata=70;
+    c2.pdata=80;
+    c2.c2data=90;
+    c2.c2print();
+    c2.cprint();
+    c2.pprint();
+  end
+endmodule
+
+//output:
+# KERNEL:  cdata=15
+# KERNEL:  pdata=10
+# KERNEL:  pdata=50
+# KERNEL:  c1data=20
+# KERNEL:  pdata=10
+# KERNEL:  pdata=60
+# KERNEL:  c2data=25
+# KERNEL:  cdata=15
+# KERNEL:  pdata=10
+# KERNEL:  c2data=90
+# KERNEL:  cdata=70
+# KERNEL:  pdata=80
+
+//base class overriding
+class parent;
+  int a=20;
+  function void display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+
+class child extends parent;
+  int a=40;
+  function void display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+module tb;
+  child c;
+  initial begin
+    c=new();
+    c.display();
+  end
+endmodule
+//output:
+# KERNEL:  a=40
+
+
+
+// To the Above Problem the first solution is creating parent class Handle.
+
+class parent;
+  int a=20;
+  function void display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+
+class child extends parent;
+  int a=40;
+  function void display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+module tb;
+  parent p;
+  child c;
+  initial begin
+    p=new();
+    c=new();
+    p.display();
+    c.display();
+  end
+endmodule
+//output:
+# KERNEL:  a=20
+# KERNEL:  a=40
+
+//
 
   
   
