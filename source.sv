@@ -2695,7 +2695,72 @@ endmodule
 # KERNEL:  a=20
 # KERNEL:  a=40
 
-//
+
+//Correct Solution is " Super Keyword "
+
+// Super keyword used in Child class only..
+
+class parent;
+  int a=20;
+  function void display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+
+class child extends parent;
+  int a=40;
+  function void display();
+    super.display();
+    $display(" a=%0d",a);
+  endfunction
+endclass
+module tb;
+  child c;
+  initial begin
+    c=new();
+    c.display();
+  end
+endmodule
+//output:
+# KERNEL:  a=20
+# KERNEL:  a=40
+
+//Super keyword with Constructor: 
+
+class parent;
+  int a;
+  function new(int a);
+    this.a=a;
+    $display("Parent  a=%0d",a);
+  endfunction
+endclass
+
+class child extends parent;
+  int a;
+  function new(int p,int c);
+    super.new(p);
+    a=c;
+    //super.display();
+    $display("child  a=%0d",a);
+  endfunction
+endclass
+module tb;
+  child c;
+  initial begin
+    c=new(9,5);
+    //c.display();
+  end
+endmodule
+
+// --> super.variable_name;( super.display)
+// 	--> Used to Access the Properties of the Parent whenever the parent 	is Overried.
+
+// --> super.new(); 
+// 	--> Is Used to Initialize the Parent class Data member.
+//output:
+# KERNEL: Parent  a=9
+# KERNEL: child  a=5
+
 
   
   
