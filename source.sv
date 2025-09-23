@@ -2496,6 +2496,52 @@ module tb;
 endmodule
 
 //output:
+ERROR VCP5240 "Cannot access non-static class member 'parent.a' using scope operator '::'." "testbench.sv" 30  15
+ERROR VCP5240 "Cannot access non-static class member 'parent.b' using scope operator '::'." "testbench.sv" 31  15
+
+
+//scope resolution operator with static keyword
+// Code your testbench here
+// or browse Examples
+class parent;
+   static int a=10;
+   static int b=20;
+  function void print ();
+    $display(" a=%0d,b=%0d",a,b);
+  endfunction 
+endclass
+
+class child extends parent;
+  int c;
+  function void  add();
+    c=a+b;
+  $display(" c=%0d", c);
+  endfunction 
+endclass
+
+module tb;
+  child c1,c2;
+  //parent p;
+  initial begin
+    c1=new();   // c1= c1.a + c1.b
+    c2=new();   // c2 = c2.a + c2.b
+    //p=new();
+  //  c1.print();
+    //p.print();
+   // c1.a=30;
+   // c2.b=40;
+   parent :: a=30;
+   parent :: b=40;
+    c1.print();
+    c2.print();
+  end
+endmodule
+
+//output:
+# KERNEL:  a=30,b=40
+# KERNEL:  a=30,b=40
+
+
 
   
   
