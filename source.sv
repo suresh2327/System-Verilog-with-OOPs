@@ -2415,6 +2415,88 @@ endinterface
 # KERNEL: output from dut sum=1,carry=0
 # KERNEL: [driver to interface] a=0,b=1
 # KERNEL: output from dut sum=1,carry=0
+
+//non static keyword
+// Code your testbench here
+// or browse Examples
+class parent;
+   int a=10;
+   int b=20;
+  function void print ();
+    $display(" a=%0d,b=%0d",a,b);
+  endfunction 
+endclass
+
+class child extends parent;
+  int c;
+  function void  add();
+    c=a+b;
+  $display(" c=%0d", c);
+  endfunction 
+endclass
+
+module tb;
+  child c1,c2;
+  //parent p;
+  initial begin
+    c1=new();   // c1= c1.a + c1.b
+    c2=new();   // c2 = c2.a + c2.b
+    //p=new();
+    c1.print();
+    //p.print();
+    c1.a=30;
+    c2.b=40;
+   // parent :: a=30;
+   // parent :: b=40;
+    c1.print();
+    c2.print();
+  end
+endmodule
+
+//output:
+# KERNEL:  a=10,b=20
+# KERNEL:  a=30,b=20
+# KERNEL:  a=10,b=40
+
+//scope resolution operator without static keyword
+// Code your testbench here
+// or browse Examples
+class parent;
+   int a=10;
+   int b=20;
+  function void print ();
+    $display(" a=%0d,b=%0d",a,b);
+  endfunction 
+endclass
+
+class child extends parent;
+  int c;
+  function void  add();
+    c=a+b;
+  $display(" c=%0d", c);
+  endfunction 
+endclass
+
+module tb;
+  child c1,c2;
+  //parent p;
+  initial begin
+    c1=new();   // c1= c1.a + c1.b
+    c2=new();   // c2 = c2.a + c2.b
+    //p=new();
+  //  c1.print();
+    //p.print();
+   // c1.a=30;
+   // c2.b=40;
+   parent :: a=30;
+   parent :: b=40;
+    c1.print();
+    c2.print();
+  end
+endmodule
+
+//output:
+
   
   
   
