@@ -2864,6 +2864,192 @@ endmodule
 # KERNEL: a=10,b=20
 # KERNEL: a=3,b=2
 
+//absctract class and pure virtual function
+virtual class base;
+  int a;
+  int b;
+  pure virtual function void print();
+    //when we used pure virtual keyword in abstract class we does not allowed to write method logics in absctract , we are allowed too create only templates and blue prints of logics which are implemeted and bulit in child classes
+endclass
+
+class child extends base;
+  function void print();
+    $display("a=%0d,b=%0d",a,b);
+  endfunction
+endclass
+
+module tb;
+  base b;
+  child c;
+  initial begin
+    c=new();
+    b=c;
+    c.a=3;
+    c.b=2;
+    b.print();
+  end
+endmodule
+
+//output:
+# KERNEL: a=3,b=2
+
+
+//in polymorphism , iin sub classess we didnot mention any methods ,even we use the virtual keyword in base class it again going point ot the base class only
+
+class remote;
+  virtual function void presspower();
+    $display("default : No Device is Connected");
+  endfunction
+endclass
+ 
+class fan extends remote;
+  function void presspower();
+    $display("Fan is ON/OFF");
+  endfunction
+endclass
+
+class ac extends remote;
+//   function void presspower();
+//     $display("AC is ON/OFF");
+//   endfunction
+endclass
+
+class light extends remote;
+  function void presspower();
+    $display("LIGHT is ON/OFF");
+  endfunction
+endclass
+
+module tb;
+  remote device[3];
+  initial begin
+    device[0]=fan::new();
+    device[1]=ac::new();
+    device[2]=light::new();
+    foreach(device[i]) device[i].presspower();
+  end
+endmodule
+
+
+//output:
+# KERNEL: Fan is ON/OFF
+# KERNEL: default : No Device is Connected
+# KERNEL: LIGHT is ON/OFF
+
+
+
+//this problem is overcome by using absctract class and pure virtual function , which is mandotary to implement the method in sub classess, if not it will give error
+virtual class remote;
+ pure virtual function void presspower();
+    
+endclass
+ 
+class fan extends remote;
+  function void presspower();
+    $display("Fan is ON/OFF");
+  endfunction
+endclass
+
+class ac extends remote;
+//   function void presspower();
+//     $display("AC is ON/OFF");
+//   endfunction
+endclass
+
+class light extends remote;
+  function void presspower();
+    $display("LIGHT is ON/OFF");
+  endfunction
+endclass
+
+module tb;
+  remote device[3];
+  initial begin
+    device[0]=fan::new();
+    device[1]=ac::new();
+    device[2]=light::new();
+    foreach(device[i]) device[i].presspower();
+  end
+endmodule
+
+
+//same code with abstract class and pure virtual function , which gives error
+virtual class remote;
+ pure virtual function void presspower();
+    
+endclass
+ 
+class fan extends remote;
+  function void presspower();
+    $display("Fan is ON/OFF");
+  endfunction
+endclass
+
+class ac extends remote;
+//   function void presspower();
+//     $display("AC is ON/OFF");
+//   endfunction
+endclass
+
+class light extends remote;
+  function void presspower();
+    $display("LIGHT is ON/OFF");
+  endfunction
+endclass
+
+module tb;
+  remote device[3];
+  initial begin
+    device[0]=fan::new();
+    device[1]=ac::new();
+    device[2]=light::new();
+    foreach(device[i]) device[i].presspower();
+  end
+endmodule
+
+//output:
+ERROR VCP2938 "Cannot declare class ac as non abstract class due to not implemented pure virtual methods:" "testbench.sv" 12  9
+ERROR VCP2941 "... see pure virtual method: presspower declaration." "testbench.sv" 2  39
+
+
+//with asbctract and working
+virtual class remote;
+ pure virtual function void presspower();
+    
+endclass
+ 
+class fan extends remote;
+  function void presspower();
+    $display("Fan is ON/OFF");
+  endfunction
+endclass
+
+class ac extends remote;
+  function void presspower();
+    $display("AC is ON/OFF");
+  endfunction
+endclass
+
+class light extends remote;
+  function void presspower();
+    $display("LIGHT is ON/OFF");
+  endfunction
+endclass
+
+module tb;
+  remote device[3];
+  initial begin
+    device[0]=fan::new();
+    device[1]=ac::new();
+    device[2]=light::new();
+    foreach(device[i]) device[i].presspower();
+  end
+endmodule
+
+//output:
+# KERNEL: Fan is ON/OFF
+# KERNEL: AC is ON/OFF
+# KERNEL: LIGHT is ON/OFF
 
 
 
