@@ -2761,7 +2761,7 @@ endmodule
 # KERNEL: Parent  a=9
 # KERNEL: child  a=5
 
-//polymorphsim
+
 //polymorphsim
 class remote;
   virtual function void presspower();
