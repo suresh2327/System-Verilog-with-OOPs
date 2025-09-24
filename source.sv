@@ -2761,7 +2761,46 @@ endmodule
 # KERNEL: Parent  a=9
 # KERNEL: child  a=5
 
+//polymorphsim
+//polymorphsim
+class remote;
+  virtual function void presspower();
+    $display("default : No Device is Connected");
+  endfunction
+endclass
+ 
+class fan extends remote;
+  function void presspower();
+    $display("Fan is ON/OFF");
+  endfunction
+endclass
 
+class ac extends remote;
+  function void presspower();
+    $display("AC is ON/OFF");
+  endfunction
+endclass
+
+class light extends remote;
+  function void presspower();
+    $display("LIGHT is ON/OFF");
+  endfunction
+endclass
+
+module tb;
+  remote device[3];
+  initial begin
+    device[0]=fan::new();
+    device[1]=ac::new();
+    device[2]=light::new();
+    foreach(device[i]) device[i].presspower();
+  end
+endmodule
+
+//output:
+# KERNEL: Fan is ON/OFF
+# KERNEL: AC is ON/OFF
+# KERNEL: LIGHT is ON/OFF
   
   
   
