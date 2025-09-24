@@ -2803,6 +2803,70 @@ endmodule
 # KERNEL: LIGHT is ON/OFF
   
 
+// virtual class or abstract class
+// Code your testbench here
+// or browse Examples
+virtual class base;
+  int a=10;
+  int b=20;
+  function void print();
+    $display("a=%0d,b=%0d",a,b);
+  endfunction
+endclass
+
+
+module tb;
+  base b;
+  initial begin
+    b=new();
+    b.print();
+    b.a=3;
+    b.b=2;
+    b.print();  
+    
+  end
+endmodule
+
+
+//output:
+ERROR VCP2937 "Cannot instantiate abstract class: base." "testbench.sv" 15  12
+
+
+
+//the soultion for above problem create a child class and access the parernt class through child class object or handle
+// Code your testbench here
+// or browse Examples
+virtual class base;
+  int a=10;
+  int b=20;
+  function void print();
+    $display("a=%0d,b=%0d",a,b);
+  endfunction
+endclass
+
+class child extends base;
+endclass
+
+
+module tb;
+  child c;
+  initial begin
+    c=new();
+    c.print();
+    c.a=3;
+    c.b=2;
+    c.print();  
+    
+  end
+endmodule
+
+//output:
+# KERNEL: a=10,b=20
+# KERNEL: a=3,b=2
+
+
+
+
   
   
   
