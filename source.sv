@@ -2869,7 +2869,8 @@ virtual class base;
   int a;
   int b;
   pure virtual function void print();
-    //when we used pure virtual keyword in abstract class we does not allowed to write method logics in absctract , we are allowed too create only templates and blue prints of logics which are implemeted and bulit in child classes
+    //when we used pure virtual keyword in abstract class we does not allowed to write method logics in absctract 
+    // we are allowed too create only templates and blue prints of logics which are implemeted and bulit in child classes
 endclass
 
 class child extends base;
@@ -2894,7 +2895,8 @@ endmodule
 # KERNEL: a=3,b=2
 
 
-//in polymorphism , iin sub classess we didnot mention any methods ,even we use the virtual keyword in base class it again going point ot the base class only
+//in polymorphism , iin sub classess we didnot mention any methods 
+//even we use the virtual keyword in base class it again going point ot the base class only
 
 class remote;
   virtual function void presspower();
@@ -3050,6 +3052,8 @@ endmodule
 # KERNEL: Fan is ON/OFF
 # KERNEL: AC is ON/OFF
 # KERNEL: LIGHT is ON/OFF
+
+
 
 
 
