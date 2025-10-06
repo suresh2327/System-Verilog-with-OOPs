@@ -1,6 +1,7 @@
-			SV OOPS CODES WITH OUTPUTS
+		//	SV OOPS CODES WITH OUTPUTS
 
-// Class: A class in SystemVerilog is a blueprint that can hold variables (data) and functions/tasks (behavior). It is mainly used in testbenches for verification.
+// Class: A class in SystemVerilog is a blueprint that can hold variables (data) and functions/tasks (behavior).
+// It is mainly used in testbenches for verification.
 
 // Object: An object is a real instance of a class, created using the new() keyword. It allows access to the class’s variables and functions.
 
@@ -3053,7 +3054,7 @@ endmodule
 # KERNEL: AC is ON/OFF
 # KERNEL: LIGHT is ON/OFF
 
-
+ 
 
 
 
