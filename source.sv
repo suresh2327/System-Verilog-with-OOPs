@@ -3172,6 +3172,35 @@ endmodule
 # KERNEL: Warning: priority_if_1: testbench.sv(5), scope: tb.0unnblk, time: 0. None of 'if' branches matched.
 
 
+//difference between alaways@* and always_comb
+module tb;
+  int a,b,c,x,y;
+  always@(a)
+    x=a^b^c;
+  always_comb
+    y=a^b^c;
+  initial begin
+        a=0;b=0;c=0;
+    #5; a=0;b=0;c=1;
+    #5; a=0;b=1;c=0;
+    #5; a=0;b=1;c=1;
+    #5; a=1;b=0;c=0;
+    #5; a=1;b=0;c=1;
+  end
+  initial begin
+    $monitor("time=%0t a=%0b,b=%0b,c=%0b,x=%0b,y=%0b",$time,a,b,c,x,y);
+  end
+endmodule
+
+//output
+# KERNEL: time=0 a=0,b=0,c=0,x=0,y=0
+# KERNEL: time=5 a=0,b=0,c=1,x=0,y=1
+# KERNEL: time=10 a=0,b=1,c=0,x=0,y=1
+# KERNEL: time=15 a=0,b=1,c=1,x=0,y=0
+# KERNEL: time=20 a=1,b=0,c=0,x=1,y=1
+# KERNEL: time=25 a=1,b=0,c=1,x=1,y=0
+
+
 
   
   
