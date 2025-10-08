@@ -3055,8 +3055,121 @@ endmodule
 # KERNEL: LIGHT is ON/OFF
 
 //after dhusera holidays
+//unique if condition when more than 1 statement is true it will show the error
 
- 
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+   unique if(a==b)
+      $display("a is equal to b");
+    else if(a<b)
+      $display("a is less than b");
+    else if(a<100)
+      $display("a is less than 100");
+      else
+        $display("exit conditon");
+    end
+endmodule
+
+//output 
+# KERNEL: a is less than b
+# ASSERT: Error: Assertion 'unique_if_1' FAILED at time: 0, testbench.sv(7), scope: tb.0unnblk. Two or more conditions are true simultaneously: a<b (line: 9), a<100. (line: 11)
+
+
+//unique if when no statements are true and without else conditon
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+   unique if(a==b)
+      $display("a is equal to b");
+    else if(a>b)
+      $display("a is less than b");
+    else if(a>100)
+      $display("a is less than 100");
+//       else
+//         $display("exit conditon");
+    end
+endmodule
+
+//output
+# KERNEL: Warning: unique_if_1: testbench.sv(5), scope: tb.0unnblk, time: 0. None of 'if' branches matched.
+
+
+//unique0  when two or more  statements are true it will not show the error
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+   unique0   if(a==b)
+      $display("a is equal to b");
+    else if(a<b)
+      $display("a is less than b");
+    else if(a<100)
+      $display("a is less than 100");
+      else
+        $display("exit conditon");
+    end
+endmodule
+
+//output
+# ASSERT: Error: Assertion 'unique_if_1' FAILED at time: 0, testbench.sv(5), scope: tb.0unnblk. Two or more conditions are true simultaneously: a<b (line: 7), a<100. (line: 9
+
+//unique0 when no statements are true and without else conditon it will not show the warning
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+   unique0   if(a==b)
+      $display("a is equal to b");
+    else if(a>b)
+      $display("a is less than b");
+    else if(a>100)
+      $display("a is less than 100");
+      
+    end
+endmodule
+
+//output
+no output no warning
+
+//priority if when two or more  statements are true it will not show the error , and execute the first true statement only
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+  priority  if(a==b)
+      $display("a is equal to b");
+    else if(a<b)
+      $display("a is less than b");
+    else if(a<100)
+      $display("a is less than 100");
+      else
+        $display("exit conditon");
+    end
+endmodule
+
+//output
+# KERNEL: a is less than b
+
+//priority if when no statements are true and without else conditon it will  show the warning
+module tb;
+  initial begin
+    int a=5;
+    int b=10;
+  priority  if(a==b)
+      $display("a is equal to b");
+    else if(a>b)
+      $display("a is less than b");
+    else if(a>100)
+      $display("a is less than 100");
+      
+    end
+endmodule
+
+//output
+# KERNEL: Warning: priority_if_1: testbench.sv(5), scope: tb.0unnblk, time: 0. None of 'if' branches matched.
 
 
 
