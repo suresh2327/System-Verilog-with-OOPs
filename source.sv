@@ -3200,9 +3200,56 @@ endmodule
 # KERNEL: time=20 a=1,b=0,c=0,x=1,y=1
 # KERNEL: time=25 a=1,b=0,c=1,x=1,y=0
 
-
-
+//$rose and $fell code
+module door_controller (
+  input logic  clk,
+  input logic  rst_n,
+  input logic  sensor_mat,
+   output logic  door_open
+);
+  always_ff@ (posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      door_open<=1'b0;
+    end
+      else if ($rose(sensor_mat)) begin
+       door_open<=1'b1; 
+      end
+        else if ($fell(sensor_mat)) begin
+       door_open<=1'b0; 
+        end
+      end
+endmodule
+module tb;
+  logic clk,rst_n, sensor_mat, door_open;
+ 
+  door_controller dut (.clk(clk),.rst_n(rst_n),.sensor_mat(sensor_mat),.door_open (door_open));
+  //clk=0;
+  initial clk=0;
+  always #5 clk=~clk;
   
+  initial begin
+     clk=0;
+     rst_n=0;
+     sensor_mat=0; 
+     #10 rst_n=1;
+     #10 sensor_mat=1;
+     #10 sensor_mat=0;
+     #10 sensor_mat=1;
+     #10 sensor_mat=0;
+     #100; $finish;
+  end
+  always@(door_open)
+    $display("sensor_mat=%0b,door_open=%0b",sensor_mat,door_open);
+endmodule
+
+//output
+# KERNEL: sensor_mat=0,door_open=0
+# KERNEL: sensor_mat=1,door_open=1
+# KERNEL: sensor_mat=0,door_open=0
+# KERNEL: sensor_mat=1,door_open=1
+# KERNEL: sensor_mat=0,door_open=0
+
+
   
   
 
