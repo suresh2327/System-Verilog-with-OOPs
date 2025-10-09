@@ -1,7 +1,0 @@
-output :
-# KERNEL: task1 is started = 0
-# KERNEL: task2 is started = 0
-# KERNEL: task1 is completed = 10
-# KERNEL: task2 is completed = 10
-# KERNEL: task3 is started = 10
-# KERNEL: task3 is completed = 20
