@@ -1,2 +1,0 @@
-//output :
-# KERNEL: string =VLSI,a =90
