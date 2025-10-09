@@ -3311,4 +3311,18 @@ endmodule
 # KERNEL: T=15,Principal modifed: Math=85, Physics=90 , Lab=99
 # KERNEL: T=20,Student learns: Math=85, Physics=90, Lab=99
 
+//alias keyword
+//alias keyword is bidirectional , when compared to the unidirectional assign statement
+module tb;
+ wire  a,b,c;
+  alias a=b;
+  alias c=b;
+  assign c=1'b1;
+  initial begin
+    #1;
+    $display("a=%0b,b=%0b c=%0b",a,b,c);
+  end
+endmodule
 
+//output
+# KERNEL: a=1,b=1 c=1
