@@ -3326,3 +3326,148 @@ endmodule
 
 //output
 # KERNEL: a=1,b=1 c=1
+
+//lifo code using queue
+
+class lifo;
+  int intQ[$];
+  function void put(int a);
+    intQ.push_back(a);
+  endfunction
+  function void get(output int a);
+   a=intQ.pop_back();
+  endfunction
+endclass
+
+module tb;
+  lifo h_lifo=new();
+  int num;
+  initial begin
+    repeat(5)
+      begin
+        num=$urandom_range(10,100);
+        h_lifo.put(num);
+        $display("put=%0d",num);
+      end
+    repeat(5)
+      begin
+        h_lifo.get(num);
+        $display("get=%0d",num);
+      end
+  end
+    endmodule
+        
+  //output:
+  # KERNEL: put=33
+# KERNEL: put=92
+# KERNEL: put=89
+# KERNEL: put=21
+# KERNEL: put=24
+# KERNEL: get=24
+# KERNEL: get=21
+# KERNEL: get=89
+# KERNEL: get=92
+# KERNEL: get=33
+
+
+//fifo code using queue
+class fifo;
+  int intQ[$];
+  function void put(int a);
+    intQ.push_back(a);
+  endfunction
+  function void get(output int a);
+   a=intQ.pop_front();
+  endfunction
+endclass
+
+module tb;
+  fifo h_fifo=new();
+  int num;
+  initial begin
+    repeat(5)
+      begin
+        num=$urandom_range(10,100);
+        h_fifo.put(num);
+        $display("put=%0d",num);
+      end
+    repeat(5)
+      begin
+        h_fifo.get(num);
+        $display("get=%0d",num);
+      end
+  end
+    endmodule
+        
+//output
+# KERNEL: put=33
+# KERNEL: put=92
+# KERNEL: put=89
+# KERNEL: put=21
+# KERNEL: put=24
+# KERNEL: get=33
+# KERNEL: get=92
+# KERNEL: get=89
+# KERNEL: get=21
+# KERNEL: get=24
+
+
+//lifo and fifo using parametrization
+`define lifo 1
+`define fifo 0
+class lifo_fifo # (bit ds_type=`lifo);
+  int intQ[$];
+  function void put (int a);
+    intQ.push_back(a);
+  endfunction
+  function void get (output int a);
+    if(ds_type == `lifo ) a= intQ.pop_back();
+    if(ds_type == `fifo ) a= intQ.pop_front();
+  endfunction
+endclass
+
+module tb;
+  lifo_fifo #(.ds_type(`lifo)) lifo_i=new();
+  int num;
+  initial begin
+    repeat (5) begin
+      num=$urandom_range (100,600);
+      lifo_i.put(num);
+      $display("Putting num=%0d", num);
+    end
+    repeat (5) begin
+      //num=$urandom_range (100,600);
+      lifo_i.get(num);
+      $display("Getting num=%0d", num);
+    end
+    
+  end
+endmodule
+
+//output for lifo
+# KERNEL: Putting num=531
+# KERNEL: Putting num=437
+# KERNEL: Putting num=119
+# KERNEL: Putting num=286
+# KERNEL: Putting num=136
+# KERNEL: Getting num=136
+# KERNEL: Getting num=286
+# KERNEL: Getting num=119
+# KERNEL: Getting num=437
+# KERNEL: Getting num=531
+
+
+//output for fifo
+# KERNEL: Putting num=531   
+# KERNEL: Putting num=437
+# KERNEL: Putting num=119
+# KERNEL: Putting num=286
+# KERNEL: Putting num=136
+# KERNEL: Getting num=531
+# KERNEL: Getting num=437
+# KERNEL: Getting num=119
+# KERNEL: Getting num=286
+# KERNEL: Getting num=136
+
+  
+  
