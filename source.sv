@@ -3470,4 +3470,32 @@ endmodule
 # KERNEL: Getting num=136
 
   
+//inside constraint 
+class sample;
+  rand int x;//rand bit[31:0]x;
+  constraint c1 {x inside{[20:35]};}
+endclass
+
+module tb;
+  sample s;
+  initial begin
+    s=new();
+    repeat(10)begin
+      assert(s.randomize());
+      $display("x=%0d",s.x);
+    end
+  end
+endmodule
+  
+//output
+# KERNEL: x=22
+# KERNEL: x=26
+# KERNEL: x=34
+# KERNEL: x=29
+# KERNEL: x=27
+# KERNEL: x=33
+# KERNEL: x=33
+# KERNEL: x=30
+# KERNEL: x=22
+# KERNEL: x=24
   
