@@ -3499,3 +3499,37 @@ endmodule
 # KERNEL: x=22
 # KERNEL: x=24
   
+//inside constraint with different ways
+`define starting_range 70
+`define ending_range 90
+
+class sample # (int p1=100,int p2=110);
+  rand bit[7:0]a;
+  rand bit[7:0]b;
+  rand bit[7:0]c;
+  rand bit[7:0]d;
+  rand bit[7:0]e;
+  constraint c1{a inside {[10:20]};}
+  constraint c2{b inside {21,22};}
+  constraint c3{c inside {[10:20],21,22};}
+  constraint c4{d inside {[`starting_range:`ending_range]};}
+  constraint c5{e inside {[p1:p2]};}
+endclass
+
+module tb;
+  sample s;
+  initial begin
+    s=new();
+    repeat(5)begin
+    assert(s.randomize());
+      $display("a=%0d,b=%0d,c=%0d,d=%0d,e=%0d",s.a,s.b,s.c,s.d,s.e);
+    end
+  end
+endmodule
+
+//output
+# KERNEL: a=17,b=21,c=14,d=76,e=102
+# KERNEL: a=12,b=21,c=18,d=90,e=106
+# KERNEL: a=18,b=21,c=16,d=80,e=101
+# KERNEL: a=15,b=22,c=17,d=89,e=106
+# KERNEL: a=13,b=22,c=17,d=83,e=110
