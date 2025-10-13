@@ -3533,3 +3533,34 @@ endmodule
 # KERNEL: a=18,b=21,c=16,d=80,e=101
 # KERNEL: a=15,b=22,c=17,d=89,e=106
 # KERNEL: a=13,b=22,c=17,d=83,e=110
+
+
+//dist constraint
+class sample;
+  rand int a;
+  constraint cd{a dist {[100:290]:/2,400:/3,600:/5};}
+  //constraint cd{a dist {[100:290]:=2,400:=3,600:=5};}
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    repeat(10)begin
+      assert(s.randomize());
+      $display("a=%0d",s.a);
+    end
+  end
+endmodule
+
+//output
+# KERNEL: a=400
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=600
+# KERNEL: a=267
+# KERNEL: a=265
+
