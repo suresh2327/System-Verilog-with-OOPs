@@ -3591,6 +3591,65 @@ endmodule
 # KERNEL: a=4 
 
 
+//unique constraint for associative array 
+class sample;
+  rand bit [7:0] arr [int]; 
+  constraint cu {unique {arr};}
+endclass
+
+module tb;
+  int i=0;
+  sample s=new();
+  initial begin
+      s.arr[10]=0;
+      s.arr[20]=0;
+      s.arr[30]=0;
+      s.arr[40]=0;
+      s.arr[50]=0;
+    //repeat(5)begin  
+     assert(s.randomize());
+    foreach(s.arr[i])
+      $display("a[%0d]=%0d",i,s.arr[i]); 
+  end
+endmodule
+
+//output
+# KERNEL: a[10]=23
+# KERNEL: a[20]=45
+# KERNEL: a[30]=67
+# KERNEL: a[40]=89
+# KERNEL: a[50]=12
+
+//soft constraint
+//soft constraint 
+class sample;
+  rand bit[7:0]t;
+  constraint c1{soft {t==10};}
+endclass
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    $display("t=%0d",s.t);
+    assert(s.randomize() with {t==11;});
+    $display("t=%0d",s.t);
+  end
+endmodule
+
+//output
+# KERNEL: t=10
+# KERNEL: t=11
+
+
+//same code without soft keyword
+# KERNEL: t=10
+# RCKERNEL: Warning: RC_0024 testbench.sv(11): Randomization failed. The condition of randomize call cannot be satisfied.
+# RCKERNEL: Info: RC_0109 testbench.sv(11): ... after reduction s.t to 10
+# RCKERNEL: Info: RC_0103 testbench.sv(11): ... the following condition cannot be met: (8'(10)==11)
+# RCKERNEL: Info: RC_1007 testbench.sv(2): ... see class 'sample' declaration.
+# ASSERT: Error: ASRT_0301 testbench.sv(11): Immediate assert condition (s.randomize(...)) FAILED at time: 0ns, scope: tb
+# KERNEL: t=10
+
 
 
 
