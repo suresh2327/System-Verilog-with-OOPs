@@ -3565,42 +3565,48 @@ endmodule
 # KERNEL: a=265
 
 
-//unique constraint for static array 
+//unique constraint for static array
+// Code your testbench here
+// or browse Examples
 class sample;
-  rand bit[7:0]arr [5];
-  constraint cu{unique {arr};}
+  rand bit[2:0] a;
+  constraint ca { unique {a};}
 endclass
 
 module tb;
-  int i=0;
   sample s=new();
   initial begin
-    //repeat(5)begin
-     assert(s.randomize());
-    foreach(s.arr[i])
-      $display("a[%0d]=%0d",i,s.arr[i]); 
+    repeat(5) begin
+      assert(s.randomize());
+      $display("a=%0d",s.a);
+    end
   end
 endmodule
 
 //output
-# KERNEL: a[0]=67
-# KERNEL: a[1]=97
-# KERNEL: a[2]=21
-# KERNEL: a[3]=130
-# KERNEL: a[4]=212
+# KERNEL: a=5
+# KERNEL: a=2
+# KERNEL: a=7
+# KERNEL: a=1
+# KERNEL: a=4 
+
+
+
+
+
+
 
 
 //unique constraint for dynamic array
 class sample;
   rand bit[7:0]arr [];
-  constraint cu{unique {arr}; arr.size==5;};
+  constraint cu{unique {arr};arr.size==5;};
 endclass
 
 module tb;
   
-  int i=0;
+  //int i=0;
   sample s=new();
- 
   initial begin
     //repeat(5)begin
      assert(s.randomize());
@@ -3610,8 +3616,9 @@ module tb;
 endmodule
 
 //output
-# KERNEL: a[0]=67
-# KERNEL: a[1]=97
-# KERNEL: a[2]=21
-# KERNEL: a[3]=130
-# KERNEL: a[4]=212
+# KERNEL: a[0]=23
+# KERNEL: a[1]=45
+# KERNEL: a[2]=67
+# KERNEL: a[3]=89
+# KERNEL: a[4]=12
+//unique constraint for dynamic array with different size
