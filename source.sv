@@ -3651,6 +3651,46 @@ endmodule
 # KERNEL: t=10
 
 
+//solve before constarint 
+//solve before constraint
+class sample;
+  rand bit[7:0]a,b;
+  constraint c1 {solve a before b;}
+  constraint c2 {b==a+15;}
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+
+//output
+# KERNEL: a=51 b=66
+
+
+//same code first b then a
+//solve before constraint
+class sample;
+  rand bit[7:0]a,b;
+  constraint c1 {solve b before a;}
+  constraint c2 {b==a+15;}
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+
+//output
+# KERNEL: a=24 b=39
+
+
 
 
 
