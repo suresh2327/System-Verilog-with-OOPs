@@ -3690,6 +3690,125 @@ endmodule
 //output
 # KERNEL: a=24 b=39
 
+//another example for solve before constraint
+//solve before constraint
+class sample;
+  rand bit[7:0]a,b;
+  constraint c1 {solve a before b;}
+  constraint c2 {b inside {[10:a]};}
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+
+//output
+# KERNEL: a=85 b=34
+
+
+//conditional constarint without without with keyword in module tb;
+//conditional constraint
+class sample;
+  rand bit [7:0]a,b;
+  constraint c1 {
+    if(a==1)
+      b==25;
+    else
+      b==15;
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+  
+  //output
+  # KERNEL: a=71 b=15
+
+
+//conditional constraint with with keyword in module tb;
+//conditional constraint
+class sample;
+  rand bit [7:0]a,b;
+  constraint c1 {
+    if(a==1)
+      b==25;
+    else
+      b==15;
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize() with {a==1;});
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+  
+//output
+# KERNEL: a=1 b=25
+
+
+//conditional constraint with with keyword in module tb;
+//conditional constraint
+class sample;
+  rand bit [7:0]a,b;
+  constraint c1 {
+    if(a==1)
+      b==25;
+    else
+      b==15;
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize() with {a==1;});
+    $display("a=%0d b=%0d",s.a,s.b);
+    assert(s.randomize() with {a==0;});
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+  
+//output
+# KERNEL: a=1 b=25
+# KERNEL: a=0 b=15
+
+//conditonal constraint with implication operator
+//conditional constraint
+class sample;
+  rand bit [7:0]a,b;
+  constraint c1 {
+    a==1 -> b==25;
+    a==0 -> b==15;
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize() with {a==1;});
+    $display("a=%0d b=%0d",s.a,s.b);
+    assert(s.randomize() with {a==0;});
+    $display("a=%0d b=%0d",s.a,s.b);
+  end
+endmodule
+  
+//output
+# KERNEL: a=1 b=25
+# KERNEL: a=0 b=15
+
+
 
 
 
