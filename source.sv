@@ -3808,6 +3808,40 @@ endmodule
 # KERNEL: a=1 b=25
 # KERNEL: a=0 b=15
 
+//mode of constaints rand_mode(1) and rand_mode(0)
+class sample;
+  rand bit[7:0]a,b,c;
+  constraint c1{a+b+c==80;}
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    s.a=10;
+    s.a.rand_mode(0); // a is disabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d c=%0d sum=%0d",s.a,s.b,s.c,{s.a+s.b+s.c});
+    s.a.rand_mode(1); // a is enabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d c=%0d sum=%0d",s.a,s.b,s.c,{s.a+s.b+s.c});
+    s.rand_mode(0); // complete sample class s is disabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d c=%0d sum=%0d",s.a,s.b,s.c,{s.a+s.b+s.c});
+    s.rand_mode(1); // complete sample class s is enabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d c=%0d sum=%0d",s.a,s.b,s.c,{s.a+s.b+s.c});
+  end
+endmodule
+
+//output
+# KERNEL: a=10 b=35 c=35 sum=80
+# KERNEL: a=24 b=28 c=28 sum=80
+# KERNEL: a=24 b=28 c=28 sum=80
+# KERNEL: a=20 b=30 c=30 sum=80
+
+
+
+
 
 
 
