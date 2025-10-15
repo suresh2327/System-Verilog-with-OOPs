@@ -3591,6 +3591,32 @@ endmodule
 # KERNEL: a=4 
 
 
+//unique constraint for dynamic array
+class sample;
+  rand bit[7:0]arr [];
+  constraint cu{unique {arr};arr.size==5;};
+endclass
+
+module tb;
+  
+  //int i=0;
+  sample s=new();
+  initial begin
+    //repeat(5)begin
+     assert(s.randomize());
+    foreach(s.arr[i])
+      $display("a[%0d]=%0d",i,s.arr[i]); 
+  end
+endmodule
+
+//output
+# KERNEL: a[0]=23
+# KERNEL: a[1]=45
+# KERNEL: a[2]=67
+# KERNEL: a[3]=89
+# KERNEL: a[4]=12
+
+
 //unique constraint for associative array 
 class sample;
   rand bit [7:0] arr [int]; 
@@ -3808,7 +3834,7 @@ endmodule
 # KERNEL: a=1 b=25
 # KERNEL: a=0 b=15
 
-//mode of constaints rand_mode(1) and rand_mode(0)
+//mode of rand, rand_mode(1) and rand_mode(0)
 class sample;
   rand bit[7:0]a,b,c;
   constraint c1{a+b+c==80;}
@@ -3840,37 +3866,77 @@ endmodule
 # KERNEL: a=20 b=30 c=30 sum=80
 
 
-
-
-
-
-
-
-
-
-
-//unique constraint for dynamic array
+//constraint_mode(0) and constraint_mode(1)
 class sample;
-  rand bit[7:0]arr [];
-  constraint cu{unique {arr};arr.size==5;};
+  rand bit [7:0]a,b;
+  constraint c1{a inside {[40:60]};}
+  constraint c2{b inside {10,20,30};}
 endclass
-
 module tb;
-  
-  //int i=0;
   sample s=new();
   initial begin
-    //repeat(5)begin
-     assert(s.randomize());
-    foreach(s.arr[i])
-      $display("a[%0d]=%0d",i,s.arr[i]); 
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+    s.c1.constraint_mode(0);//c1 constraint disable other than c1 values are pritnting
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+    s.c1.constraint_mode(1); //c1 is enabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
+    s.c2.constraint_mode(0); //c2 is disabled
+    assert(s.randomize());
+    $display("a=%0d b=%0d",s.a,s.b);
   end
 endmodule
 
+
 //output
-# KERNEL: a[0]=23
-# KERNEL: a[1]=45
-# KERNEL: a[2]=67
-# KERNEL: a[3]=89
-# KERNEL: a[4]=12
-//unique constraint for dynamic array with different size
+# KERNEL: a=47 b=20
+# KERNEL: a=160 b=10
+# KERNEL: a=48 b=20
+# KERNEL: a=41 b=74
+
+
+//consider a 4bit dynamic array with a size of 10 and store the unique values into the given dynamic array without unique keyword
+
+class sample;
+  rand bit[3:0]a[];
+  int i,j;
+  constraint c1 {a.size==10;
+                 foreach(a[i])
+                   foreach(a[j])
+                     if(i!=j)  a[i]!=a[j];
+                }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    foreach(s.a[i])
+      $display("a[%0d]=%0d",i,s.a[i]);
+  end
+endmodule
+         
+//output:
+
+  # KERNEL: a[0]=7
+# KERNEL: a[1]=8
+# KERNEL: a[2]=0
+# KERNEL: a[3]=2
+# KERNEL: a[4]=4
+# KERNEL: a[5]=5
+# KERNEL: a[6]=12
+# KERNEL: a[7]=13
+# KERNEL: a[8]=9
+# KERNEL: a[9]=1
+
+
+
+
+
+
+
+
+
+
