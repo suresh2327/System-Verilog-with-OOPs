@@ -4067,6 +4067,35 @@ endmodule
 # KERNEL: 0 1 1 2 3 5 8 13 21 34 55 89 
 
 
+//factorial of a given number 
+class sample;
+  rand bit[7:0]a[];
+  int i;
+  constraint c1 {
+    a.size==5;
+    a[0]==1;
+    foreach(a[i])
+      if(i>0) a[i]==a[i-1]*(i+1);  
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    foreach(s.a[i])
+      $write("%0d ",s.a[i]);
+  end
+endmodule
+
+//output
+# KERNEL: 1 2 6 24 120 
+
+
+
+
+
+
 //write a constraint for below scenario for a is lessthan 20 than b value should generate form 10-30 and if b is greater than 20 the value should be generated 30 to 50 
 
 
