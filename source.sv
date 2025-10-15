@@ -4038,6 +4038,45 @@ endmodule
 # KERNEL: a[8]=1
 # KERNEL: a[9]=0
 
+//fibbanoci series
+
+class sample;
+  rand bit[7:0]a[];
+  int i;
+  constraint c1 {a.size==12;
+                 foreach(a[i])
+                   if(i==0) a[i]==0;
+                 else if(i==1) a[i]==1;
+                 else
+                   a[i]==a[i-2]+a[i-1];
+                   
+                }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    
+    assert(s.randomize());
+    foreach(s.a[i])
+      $write("%0d ",s.a[i]);
+  end
+endmodule
+
+//output
+# KERNEL: 0 1 1 2 3 5 8 13 21 34 55 89 
+
+
+//write a constraint for below scenario for a is lessthan 20 than b value should generate form 10-30 and if b is greater than 20 the value should be generated 30 to 50 
+
+
+//writer a constraint for 16 bit address which should contain 8th bit as 1 
+
+//write a constrint for 16 bit address to generate power of 2
+//write a constarint for apb slave select signal 
+
+// declare a queue fill with 20 random values between 300 to 500 with no repatation 
+                 
 
 
 
