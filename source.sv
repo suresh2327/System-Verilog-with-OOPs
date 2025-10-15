@@ -3931,6 +3931,36 @@ endmodule
 # KERNEL: a[8]=9
 # KERNEL: a[9]=1
 
+//consider a 4 bit dynamic array in such a way that the size of the given dynamic array varies from 10 to 15,and store even values in odd locations and odd values in even locations
+class sample;
+  rand bit [3:0] a[];
+
+  constraint c1 {
+    a.size inside {[10:15]};
+    foreach (a[i]) {
+      if (i%2==0)
+        a[i]%2==1; 
+      else
+        a[i]%2==0;
+    }
+  }
+endclass
+
+
+module tb;
+  sample s=new();
+  initial begin
+    repeat (5) begin
+      assert (s.randomize())
+      foreach (s.a[i])
+        $display("a[%0d]=%0d", i, s.a[i]);
+    end
+  end
+endmodule
+
+//output
+
+
 
 
 
