@@ -4004,6 +4004,42 @@ endmodule
 # KERNEL: a[9]=14
 
 
+//write a constraint for 4 bit dynamic array with soze of 10 and store the random values into the given dynamic array in desendeding orde
+
+class sample;
+  rand bit[3:0]a[];
+  int i;
+  constraint c1 {a.size==10;
+                 foreach(a[i])
+                   if(i>0)
+                     a[i]<a[i-1];
+                }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    
+    assert(s.randomize());
+    foreach(s.a[i])
+      $display("a[%0d]=%0d",i,s.a[i]);
+  end
+endmodule
+
+//output
+# KERNEL: a[0]=14
+# KERNEL: a[1]=13
+# KERNEL: a[2]=11
+# KERNEL: a[3]=9
+# KERNEL: a[4]=8
+# KERNEL: a[5]=5
+# KERNEL: a[6]=4
+# KERNEL: a[7]=2
+# KERNEL: a[8]=1
+# KERNEL: a[9]=0
+
+
+
 
 
 
