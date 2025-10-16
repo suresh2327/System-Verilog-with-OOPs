@@ -4111,7 +4111,124 @@ endmodule
 
 
 //16/10/2025
-                 
+// Code your design here
+//Palindrome number
+
+class sample;
+  rand bit [2:0]a[];
+  constraint c1{
+    a.size inside{5};
+    foreach(a[i])
+      a[i-1]==a[a.size-i];
+  }
+  
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    repeat(10)begin
+      assert(s.randomize());
+      $display("%0p",s.a);
+    end
+  end
+endmodule
+
+//output
+# KERNEL: 2 2 7 2 2
+# KERNEL: 4 2 1 2 4
+# KERNEL: 5 1 0 1 5
+# KERNEL: 0 3 0 3 0
+# KERNEL: 2 0 5 0 2
+# KERNEL: 3 5 6 5 3
+# KERNEL: 4 5 1 5 4
+# KERNEL: 0 7 6 7 0
+# KERNEL: 6 0 0 0 6
+# KERNEL: 4 3 0 3 4
+
+
+//another way to write the above code
+//only logic 
+// Code your testbench here
+// or browse Examples
+//palindrome 
+class sample;
+  rand bit[2:0]a[];
+  constraint c1 {
+    a.size==5;
+    foreach(a[i])
+      a[i]==a[(a.size-1)-i];
+  }
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    repeat(10) begin
+    assert(s.randomize());
+    foreach(s.a[i])
+      $write("%0d ",s.a[i]);
+      $display("\n");
+  end
+  end
+endmodule
+//output
+# KERNEL: 2 2 7 2 2 
+# KERNEL: 
+# KERNEL: 4 2 1 2 4 
+# KERNEL: 
+# KERNEL: 5 1 0 1 5 
+# KERNEL: 
+# KERNEL: 0 3 0 3 0 
+# KERNEL: 
+# KERNEL: 2 0 5 0 2 
+# KERNEL: 
+# KERNEL: 3 5 6 5 3 
+# KERNEL: 
+# KERNEL: 4 5 1 5 4 
+# KERNEL: 
+# KERNEL: 0 7 6 7 0 
+# KERNEL: 
+# KERNEL: 6 0 0 0 6 
+# KERNEL: 
+# KERNEL: 4 3 0 3 4 
+# KERNEL: 
+
+//another way to write the above code
+//palindrome
+//Palindrome number
+
+class sample;
+  rand bit [2:0]a[];
+  constraint c1{
+    a.size inside{5};
+    foreach(a[i])
+      if(i>0 && i<=a.size/2) a[i-1]==a[a.size-i];
+  }
+  
+endclass
+
+module tb;
+  sample s=new();
+  initial begin
+    repeat(10)begin
+      assert(s.randomize());
+      $display("%0p",s.a);
+    end
+  end
+endmodule
+//output
+# KERNEL: 7 2 1 2 7
+# KERNEL: 0 2 6 2 0
+# KERNEL: 7 6 0 6 7
+# KERNEL: 0 1 4 1 0
+# KERNEL: 5 6 7 6 5
+# KERNEL: 1 4 5 4 1
+# KERNEL: 3 5 5 5 3
+# KERNEL: 3 3 2 3 3
+# KERNEL: 3 2 4 2 3
+# KERNEL: 3 7 5 7 3
+
 
 
 
