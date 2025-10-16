@@ -4229,8 +4229,48 @@ endmodule
 # KERNEL: 3 2 4 2 3
 # KERNEL: 3 7 5 7 3
 
+//write a constrint for 16 bit address to generate power of 2
+
+// Code your testbench here
+// or browse Examples
+class sample;
+  rand bit [16:0]a[];
+  constraint c1{
+    a.size inside{16};
+    foreach(a[i])
+      a[i]==1'b1<<i;
+  }
+endclass
 
 
+
+module tb;
+  sample s=new();
+  initial begin
+    assert(s.randomize());
+    foreach(s.a[i])
+      $display("a[%0d]=%0d",i,s.a[i]);
+  end
+endmodule
+
+
+//output
+# KERNEL: a[0]=1
+# KERNEL: a[1]=2
+# KERNEL: a[2]=4
+# KERNEL: a[3]=8
+# KERNEL: a[4]=16
+# KERNEL: a[5]=32
+# KERNEL: a[6]=64
+# KERNEL: a[7]=128
+# KERNEL: a[8]=256
+# KERNEL: a[9]=512
+# KERNEL: a[10]=1024
+# KERNEL: a[11]=2048
+# KERNEL: a[12]=4096
+# KERNEL: a[13]=8192
+# KERNEL: a[14]=16384
+# KERNEL: a[15]=32768
 
 
 
