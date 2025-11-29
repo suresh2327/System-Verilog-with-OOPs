@@ -4273,14 +4273,6 @@ endmodule
 # KERNEL: a[15]=32768
 
 
-//write a constarint for apb slave select signal dfugdfibn
-suresh suresh suresh
-
-dsjfbasdjdvajsdvadsjvnajdfvn
-
-
-
-dsfbdfsdavdjnjddvjb
 
 
 
