@@ -4117,8 +4117,6 @@ endmodule
 # KERNEL: a[14]=16384
 # KERNEL: a[15]=32768
 
-hi
-hello
 
 
 
