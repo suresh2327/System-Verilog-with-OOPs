@@ -4118,7 +4118,193 @@ endmodule
 # KERNEL: a[15]=32768
 
 
+//complete tb for full adder using system verilog 
+	  // Code your design here
+module full_adder(
+  input  logic a,
+  input  logic b,
+  input  logic c,
+  output logic sum,
+  output logic carry
+);
+  always_comb begin
+    sum=a^b^c;
+    carry=(a&b)|(b&c)|(c&a);
+  end
+endmodule
 
+
+// module full_adder(
+//   input a,b,c,
+//   output sum,carry
+// );
+//   wire w1,w2,w3,w4;
+//   xor g1(w1,a,b);
+//   xor g2(sum,w1,c);
+//   and g3(w2,a,b);
+//   and g4(w3,w2,c);
+//   or g5(carry,w2,w3);
+  
+//   //assign sum=a^b^c;
+//   //assign carry=(a&b)|(b&c)|(c&a);
+// endmodule
+
+
+//testbench
+//interface
+interface intf();
+  logic a;
+  logic b;
+  logic c;
+  logic sum;
+  logic carry;
+endinterface
+//transcation class
+class tx_class;
+  rand bit a;
+  rand bit b;
+  rand bit c;
+  bit sum;
+  bit carry;
+  
+  function void print(string tag);
+    $display("time=%0t, [%0s] a=%0b,b=%0b,c=%0b,sum=%0b,carry=%0b",$time, tag,a,b,c,sum,carry);
+  endfunction
+endclass
+//generator class
+class generator;
+  tx_class tx;
+  mailbox gen2drv;
+  
+  function new(mailbox gen2drv);
+    this.gen2drv=gen2drv;
+  endfunction
+  
+  task main();
+    repeat(8)begin
+      tx=new();
+      assert(tx.randomize());
+      $display("time=%0t, [Gen Signals] a=%0b,b=%0b,c=%0b",$time,tx.a,tx.b,tx.c);
+      gen2drv.put(tx);
+    end
+  endtask   
+endclass
+//driver class
+class driver;
+  virtual intf vif;
+  mailbox gen2drv;
+  
+  function new(virtual intf vif, mailbox gen2drv);
+    this.vif=vif;
+    this.gen2drv=gen2drv;
+  endfunction
+  
+  task main();
+    repeat(8)begin
+      tx_class tx;
+      gen2drv.get(tx);
+      vif.a<=tx.a;
+      vif.b<=tx.b;
+      vif.c<=tx.c;
+      #1;
+      $display("time=%0t, [Driver Signals] a=%0b,b=%0b,c=%0b",$time,tx.a,tx.b,tx.c);
+    end
+  endtask
+endclass
+//monitor class    
+class monitor;
+  virtual intf vif;
+  mailbox mon2scb;
+  
+  function new(virtual intf vif, mailbox mon2scb);
+    this.vif=vif;
+    this.mon2scb=mon2scb;
+  endfunction
+  
+  task main();
+    repeat(8)
+      #1
+      begin
+        tx_class tx;
+        tx=new();
+        tx.a=vif.a;
+        tx.b=vif.b;
+        tx.c=vif.c;
+        tx.sum=vif.sum;
+        tx.carry=vif.carry;
+        
+        mon2scb.put(tx);
+        tx.print("MONITOR Signals");
+      end
+  endtask
+endclass
+//scoreboard class
+class scoreboard;
+  mailbox mon2scb;
+  
+  function new(mailbox mon2scb);
+    this.mon2scb=mon2scb;
+  endfunction
+  
+  task main();
+    tx_class tx;
+    repeat(8)
+      begin
+        mon2scb.get(tx);
+        tx.print("SCoreBoard Signals");
+        if((tx.a^tx.b^tx.c == tx.sum) && (((tx.a&tx.b)|(tx.b&tx.c)|(tx.c&tx.a) == tx.carry)))
+          $display(" ---------------------> pass <----------------------");
+        else
+          $display(" ---------------------> fail <----------------------");
+      end
+  endtask
+endclass
+//environment class
+class environment;
+  generator gen;
+  driver div;
+  monitor mon;
+  scoreboard sb;
+  
+  mailbox gen2drv;
+  mailbox mon2scb;
+  
+  virtual intf vif;
+  
+  function new(virtual intf vif);
+    this.vif=vif;
+    gen2drv=new();
+    mon2scb=new();
+    gen=new(gen2drv);
+    div=new(vif,gen2drv);
+    mon=new(vif,mon2scb);
+    sb=new(mon2scb);
+  endfunction
+  
+  task test_run();
+    fork
+      gen.main();
+      div.main();
+      mon.main();
+      sb.main();
+    join
+  endtask
+endclass
+//test 
+program test(intf intff);
+  environment env;
+  initial
+    begin
+      env=new(intff);
+      env.test_run();
+    end
+endprogram
+//tb
+module tb;
+  intf intff();
+  test t (intff);
+  full_adder h1(.a(intff.a),.b(intff.b),.c(intff.c),.sum(intff.sum),.carry(intff.carry));
+endmodule	  
 
 
 
