@@ -434,18 +434,89 @@ endmodule
 
 //09/08/2025
 //half adder code with generator , driver , mailbox, interface 
+module ha(a,b,sum,carry);
+  input a,b;
+  output sum,carry;
+  assign sum=a^b;
+  assign carry=a&b;
+endmodule
+
+
+
+//TB
+
+interface inter;
+  logic a;
+  logic b;
+  logic sum;
+  logic carry;
+endinterface
+
+
+//test bench
+
+class generator;
+  mailbox mbx;
+  bit a;
+  bit b;
+  int i=0;
+  
+  task run();
+    for(i=0;i<4;i++)begin
+      {a,b}=i;
+      mbx.put({a,b});
+      $display("generator test cases : a=%0b, b=%0b",a,b);
+    end
+  endtask
+endclass
+ 
+class driver;
+  mailbox mbx;
+  virtual inter vif;
+  task run();
+    bit [1:0]temp;
+    forever begin
+      #1;
+    mbx.get(temp);
+      vif.a=temp[1];
+      vif.b=temp[0];   
+    #10;
+      $display("Driver applied test cases : a=%0b,b=%0b  and output from dut sum =%0b, carry=%0b",vif.a,vif.b,vif.sum,vif.carry);
+    end
+  endtask
+endclass
+
+module tb;
+  ha u1(aif.a,aif.b,aif.sum,aif.carry);
+  inter aif();
+  generator gen;
+  mailbox mbx;
+  driver div;
+  initial begin
+    gen=new();
+    mbx=new();
+    div=new();
+    gen.mbx=mbx;
+    div.mbx=mbx;
+    div.vif=aif;
+    
+    gen.run();
+    div.run();
+  end
+endmodule
+
 
 
 
 //output
-# KERNEL: generator test cases : A=0,B=0
-# KERNEL: generator test cases : A=0,B=1
-# KERNEL: generator test cases : A=1,B=0
-# KERNEL: generator test cases : A=1,B=1
-# KERNEL: driver applied test cases : A=0,B=0 and output fromm dut DIFFERENCE=0,BORROW=0
-# KERNEL: driver applied test cases : A=0,B=1 and output fromm dut DIFFERENCE=1,BORROW=1
-# KERNEL: driver applied test cases : A=1,B=0 and output fromm dut DIFFERENCE=1,BORROW=0
-# KERNEL: driver applied test cases : A=1,B=1 and output fromm dut DIFFERENCE=0,BORROW=0
+# KERNEL: generator test cases : a=0, b=0
+# KERNEL: generator test cases : a=0, b=1
+# KERNEL: generator test cases : a=1, b=0
+# KERNEL: generator test cases : a=1, b=1
+# KERNEL: Driver applied test cases : a=0,b=0  and output from dut sum =0, carry=0
+# KERNEL: Driver applied test cases : a=0,b=1  and output from dut sum =1, carry=0
+# KERNEL: Driver applied test cases : a=1,b=0  and output from dut sum =1, carry=0
+# KERNEL: Driver applied test cases : a=1,b=1  and output from dut sum =0, carry=1
 
 //full adder code with gen,div,mbx,interface
 
