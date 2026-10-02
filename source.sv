@@ -875,6 +875,30 @@ endmodule
 # KERNEL: time =170 : 5 + 0 = 5
 # KERNEL: time =190 : 1 + 5 = 6
 
+//pass by values
+module tb;
+  task swap(input [3:0]a,b);
+    bit [3:0]temp;
+    temp=a;
+    a=b;
+    b=temp;
+    $display(" after swap in task a=%0d b=%0d",a,b);
+  endtask
+  bit [3:0]a,b;
+  initial begin
+    a=5;
+    b=9;
+    $display(" before swap in module a=%0d b=%0d",a,b);
+    swap(a,b);
+    $display(" after swap in module a=%0d b=%0d",a,b);
+  end
+endmodule
+
+//output :
+# KERNEL:  before swap in module a=5 b=9
+# KERNEL:  after swap in task a=9 b=5
+# KERNEL:  after swap in module a=5 b=9
+
 
 //code for pass by values 
 module tb;
@@ -898,6 +922,29 @@ endmodule
 # KERNEL: a=5 b=9
 # KERNEL: a=9 b=5
 
+
+//pass by refernce 
+module tb;
+  task automatic swap(ref bit [3:0]a,b);
+    bit [3:0]temp;
+    temp=a;
+    a=b;
+    b=temp;
+    $display(" after swap in task a=%0d b=%0d",a,b);
+  endtask
+  bit [3:0]a,b;
+  initial begin
+    a=5;
+    b=9;
+    $display(" before swap in module a=%0d b=%0d",a,b);
+    swap(a,b);
+    $display(" after swap in module a=%0d b=%0d",a,b);
+  end
+endmodule
+//output:
+	# KERNEL:  before swap in module a=5 b=9
+# KERNEL:  after swap in task a=9 b=5
+# KERNEL:  after swap in module a=9 b=5
 
 //code for pass by reference 
 module tb;
